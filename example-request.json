@@ -1,0 +1,806 @@
+{
+  "input": {
+    "workflow": {
+      "18": {
+        "inputs": {
+          "noise": [
+            "58",
+            0
+          ],
+          "guider": [
+            "59",
+            0
+          ],
+          "sampler": [
+            "60",
+            0
+          ],
+          "sigmas": [
+            "61",
+            0
+          ],
+          "latent_image": [
+            "253",
+            0
+          ]
+        },
+        "class_type": "SamplerCustomAdvanced",
+        "_meta": {
+          "title": "SamplerCustomAdvanced"
+        }
+      },
+      "19": {
+        "inputs": {
+          "samples": [
+            "18",
+            0
+          ],
+          "vae": [
+            "26",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "26": {
+        "inputs": {
+          "filename": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "VAELoader"
+        }
+      },
+      "29": {
+        "inputs": {
+          "conditioning": [
+            "32",
+            0
+          ]
+        },
+        "class_type": "ConditioningZeroOut",
+        "_meta": {
+          "title": "ConditioningZeroOut"
+        }
+      },
+      "32": {
+        "inputs": {
+          "text": "Create an automotive scene of SUV parked at the empty urban street with historic building of Rome, late afternoon with warm sunlight.",
+          "clip": [
+            "212",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIPTextEncode"
+        }
+      },
+      "34": {
+        "inputs": {
+          "value": 3,
+          "conditioning": [
+            "230",
+            0
+          ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+          "title": "FluxGuidance"
+        }
+      },
+      "37": {
+        "inputs": {
+          "value": 1.1500000000000001,
+          "model": [
+            "186",
+            0
+          ]
+        },
+        "class_type": "ModelSamplingFlux",
+        "_meta": {
+          "title": "ModelSamplingFlux"
+        }
+      },
+      "58": {
+        "inputs": {
+          "value": 504480037317162,
+          "noise_seed": [
+            "179",
+            0
+          ]
+        },
+        "class_type": "RandomNoise",
+        "_meta": {
+          "title": "RandomNoise"
+        }
+      },
+      "59": {
+        "inputs": {
+          "model": [
+            "37",
+            0
+          ],
+          "conditioning": [
+            "34",
+            0
+          ]
+        },
+        "class_type": "BasicGuider",
+        "_meta": {
+          "title": "BasicGuider"
+        }
+      },
+      "60": {
+        "inputs": {
+          "text": "euler"
+        },
+        "class_type": "KSamplerSelect",
+        "_meta": {
+          "title": "KSamplerSelect"
+        }
+      },
+      "61": {
+        "inputs": {
+          "text": "normal",
+          "model": [
+            "37",
+            0
+          ]
+        },
+        "class_type": "BasicScheduler",
+        "_meta": {
+          "title": "BasicScheduler"
+        }
+      },
+      "76": {
+        "inputs": {
+          "value": 2.0000000000000004
+        },
+        "class_type": "easy float",
+        "_meta": {
+          "title": "easy float"
+        }
+      },
+      "77": {
+        "inputs": {
+          "filename": "(a*r+32)/2",
+          "r_float": [
+            "76",
+            0
+          ]
+        },
+        "class_type": "Calculation [Dream]",
+        "_meta": {
+          "title": "Calculation [Dream]"
+        }
+      },
+      "79": {
+        "inputs": {
+          "filename": "(a*r+32)/2",
+          "r_float": [
+            "76",
+            0
+          ]
+        },
+        "class_type": "Calculation [Dream]",
+        "_meta": {
+          "title": "Calculation [Dream]"
+        }
+      },
+      "80": {
+        "inputs": {
+          "model_name": "8x_NMKD-Superscale_150000_G.pth"
+        },
+        "class_type": "UpscaleModelLoader",
+        "_meta": {
+          "title": "UpscaleModelLoader"
+        }
+      },
+      "82": {
+        "inputs": {
+          "value": 2,
+          "image": [
+            "252",
+            0
+          ],
+          "model": [
+            "114",
+            0
+          ],
+          "positive": [
+            "115",
+            0
+          ],
+          "negative": [
+            "116",
+            0
+          ],
+          "vae": [
+            "112",
+            0
+          ],
+          "upscale_model": [
+            "80",
+            0
+          ],
+          "tile_width": [
+            "249",
+            0
+          ],
+          "tile_height": [
+            "249",
+            1
+          ]
+        },
+        "class_type": "UltimateSDUpscaleCustomSample",
+        "_meta": {
+          "title": "UltimateSDUpscaleCustomSample"
+        }
+      },
+      "103": {
+        "inputs": {
+          "filename_prefix": "ComfyUI",
+          "images": [
+            "19",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "104": {
+        "inputs": {
+          "text": "true"
+        },
+        "class_type": "FileNamePrefix",
+        "_meta": {
+          "title": "FileNamePrefix"
+        }
+      },
+      "112": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "114": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "115": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "116": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "117": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "155": {
+        "inputs": {
+          "filename_prefix": [
+            "156",
+            0
+          ],
+          "images": [
+            "82",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "156": {
+        "inputs": {
+          "text": "true"
+        },
+        "class_type": "FileNamePrefix",
+        "_meta": {
+          "title": "FileNamePrefix"
+        }
+      },
+      "179": {
+        "inputs": {
+          "value": 823433577838557
+        },
+        "class_type": "Seed (rgthree)",
+        "_meta": {
+          "title": "Seed (rgthree)"
+        }
+      },
+      "185": {
+        "inputs": {
+          "text": "disabled",
+          "model": [
+            "213",
+            0
+          ]
+        },
+        "class_type": "PathchSageAttentionKJ",
+        "_meta": {
+          "title": "PathchSageAttentionKJ"
+        }
+      },
+      "186": {
+        "inputs": {
+          "value": true,
+          "model": [
+            "185",
+            0
+          ]
+        },
+        "class_type": "ModelPatchTorchSettings",
+        "_meta": {
+          "title": "ModelPatchTorchSettings"
+        }
+      },
+      "187": {
+        "inputs": {
+          "anything": [
+            "18",
+            0
+          ]
+        },
+        "class_type": "easy cleanGpuUsed",
+        "_meta": {
+          "title": "easy cleanGpuUsed"
+        }
+      },
+      "188": {
+        "inputs": {
+          "anything": [
+            "187",
+            0
+          ]
+        },
+        "class_type": "easy clearCacheAll",
+        "_meta": {
+          "title": "easy clearCacheAll"
+        }
+      },
+      "189": {
+        "inputs": {
+          "anything": [
+            "79",
+            1
+          ]
+        },
+        "class_type": "easy cleanGpuUsed",
+        "_meta": {
+          "title": "easy cleanGpuUsed"
+        }
+      },
+      "190": {
+        "inputs": {
+          "anything": [
+            "189",
+            0
+          ]
+        },
+        "class_type": "easy clearCacheAll",
+        "_meta": {
+          "title": "easy clearCacheAll"
+        }
+      },
+      "212": {
+        "inputs": {
+          "filename": "long_clip\\ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+          "title": "DualCLIPLoader"
+        }
+      },
+      "213": {
+        "inputs": {
+          "filename": "flux1-dev-kontext.safetensors"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNETLoader"
+        }
+      },
+      "220": {
+        "inputs": {
+          "value": false,
+          "image1": [
+            "222",
+            0
+          ]
+        },
+        "class_type": "XIS_PackImages",
+        "_meta": {
+          "title": "XIS_PackImages"
+        }
+      },
+      "222": {
+        "inputs": {
+          "filename": "sam_vit_h (2.56GB)",
+          "image": [
+            "224",
+            0
+          ]
+        },
+        "class_type": "LayerMask: SegmentAnythingUltra V2",
+        "_meta": {
+          "title": "LayerMask: SegmentAnythingUltra V2"
+        }
+      },
+      "223": {
+        "inputs": {
+          "text": "[0]",
+          "pack_images": [
+            "220",
+            0
+          ]
+        },
+        "class_type": "XIS_ReorderImages",
+        "_meta": {
+          "title": "XIS_ReorderImages"
+        }
+      },
+      "224": {
+        "inputs": {
+          "image": "1760x1100.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "LoadImage"
+        }
+      },
+      "226": {
+        "inputs": {
+          "value": 1344,
+          "pack_images": [
+            "223",
+            0
+          ]
+        },
+        "class_type": "XISER_Canvas",
+        "_meta": {
+          "title": "XISER_Canvas"
+        }
+      },
+      "228": {
+        "inputs": {
+          "pixels": [
+            "226",
+            0
+          ],
+          "vae": [
+            "26",
+            0
+          ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+          "title": "VAEEncode"
+        }
+      },
+      "230": {
+        "inputs": {
+          "conditioning": [
+            "32",
+            0
+          ],
+          "latent": [
+            "228",
+            0
+          ]
+        },
+        "class_type": "ReferenceLatent",
+        "_meta": {
+          "title": "ReferenceLatent"
+        }
+      },
+      "231": {
+        "inputs": {
+          "value": [
+            {
+              "name": "A",
+              "selected": true,
+              "url": "/api/view?filename=rgthree.compare._temp_ksrmy_00001_.png&type=temp&subfolder=&rand=0.28925770111794646"
+            },
+            {
+              "name": "B",
+              "selected": true,
+              "url": "/api/view?filename=rgthree.compare._temp_ksrmy_00002_.png&type=temp&subfolder=&rand=0.39466198331806346"
+            }
+          ],
+          "image_a": [
+            "19",
+            0
+          ],
+          "image_b": [
+            "237",
+            0
+          ]
+        },
+        "class_type": "Image Comparer (rgthree)",
+        "_meta": {
+          "title": "Image Comparer (rgthree)"
+        }
+      },
+      "235": {
+        "inputs": {
+          "image": [
+            "226",
+            0
+          ]
+        },
+        "class_type": "GetImageSize+",
+        "_meta": {
+          "title": "GetImageSize+"
+        }
+      },
+      "236": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "186",
+            0
+          ],
+          "positive": [
+            "34",
+            0
+          ],
+          "negative": [
+            "29",
+            0
+          ],
+          "latent_image": [
+            "239",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "237": {
+        "inputs": {
+          "samples": [
+            "236",
+            0
+          ],
+          "vae": [
+            "244",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "238": {
+        "inputs": {
+          "upscale_method": "lanczos",
+          "width": [
+            "241",
+            0
+          ],
+          "height": [
+            "243",
+            0
+          ],
+          "crop": "disabled",
+          "image": [
+            "19",
+            0
+          ]
+        },
+        "class_type": "ImageScale",
+        "_meta": {
+          "title": "ImageScale"
+        }
+      },
+      "239": {
+        "inputs": {
+          "pixels": [
+            "238",
+            0
+          ],
+          "vae": [
+            "244",
+            0
+          ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+          "title": "VAEEncode"
+        }
+      },
+      "241": {
+        "inputs": {
+          "text": "a*2",
+          "a": [
+            "242",
+            0
+          ]
+        },
+        "class_type": "MathExpression|pysssss",
+        "_meta": {
+          "title": "MathExpression|pysssss"
+        }
+      },
+      "242": {
+        "inputs": {
+          "image": [
+            "19",
+            0
+          ]
+        },
+        "class_type": "GetImageSize+",
+        "_meta": {
+          "title": "GetImageSize+"
+        }
+      },
+      "243": {
+        "inputs": {
+          "text": "a*2",
+          "a": [
+            "242",
+            1
+          ]
+        },
+        "class_type": "MathExpression|pysssss",
+        "_meta": {
+          "title": "MathExpression|pysssss"
+        }
+      },
+      "244": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "247": {
+        "inputs": {
+          "filename_prefix": [
+            "104",
+            0
+          ],
+          "images": [
+            "237",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "249": {
+        "inputs": {
+          "image": [
+            "237",
+            0
+          ]
+        },
+        "class_type": "GetImageSize+",
+        "_meta": {
+          "title": "GetImageSize+"
+        }
+      },
+      "250": {
+        "inputs": {
+          "filename": "a/2",
+          "a": [
+            "249",
+            0
+          ]
+        },
+        "class_type": "MathExpression|pysssss",
+        "_meta": {
+          "title": "MathExpression|pysssss"
+        }
+      },
+      "251": {
+        "inputs": {
+          "filename": "a/2",
+          "a": [
+            "249",
+            1
+          ]
+        },
+        "class_type": "MathExpression|pysssss",
+        "_meta": {
+          "title": "MathExpression|pysssss"
+        }
+      },
+      "252": {
+        "inputs": {
+          "text": "resize",
+          "image": [
+            "237",
+            0
+          ],
+          "resize_width": [
+            "250",
+            0
+          ],
+          "resize_height": [
+            "251",
+            0
+          ]
+        },
+        "class_type": "Image Resize",
+        "_meta": {
+          "title": "Image Resize"
+        }
+      },
+      "253": {
+        "inputs": {
+          "width": [
+            "235",
+            0
+          ],
+          "height": [
+            "235",
+            1
+          ],
+          "batch_size": 1
+        },
+        "class_type": "EmptySD3LatentImage",
+        "_meta": {
+          "title": "EmptySD3LatentImage"
+        }
+      },
+      "254": {
+        "inputs": {
+          "value": [
+            {
+              "name": "A",
+              "selected": true,
+              "url": "/api/view?filename=rgthree.compare._temp_kyrun_00003_.png&type=temp&subfolder=&rand=0.6684710142674726"
+            },
+            {
+              "name": "B",
+              "selected": true,
+              "url": "/api/view?filename=rgthree.compare._temp_kyrun_00004_.png&type=temp&subfolder=&rand=0.5599830892202531"
+            }
+          ],
+          "image_a": [
+            "237",
+            0
+          ],
+          "image_b": [
+            "82",
+            0
+          ]
+        },
+        "class_type": "Image Comparer (rgthree)",
+        "_meta": {
+          "title": "Image Comparer (rgthree)"
+        }
+      }
+    }
+  }
+}
