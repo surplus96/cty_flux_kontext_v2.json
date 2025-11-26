@@ -60,11 +60,22 @@ if not WORKFLOW_PATH.exists():
 BASE_WORKFLOW = json.loads(WORKFLOW_PATH.read_text())
 
 
+def _log_workflow_debug(workflow_name: str, workflow: dict, *, source: str) -> None:
+    nodes = workflow.get("nodes", [])
+    node_ids = [node.get("id") for node in nodes if isinstance(node, dict)]
+    print(
+        f"[handler][{workflow_name}] nodes={len(nodes)} "
+        f"first_ids={node_ids[:10]} image_source={source}"
+    )
+
+
 def build_basic_workflow(job_input: dict) -> dict:
-    required_fields = ["prompt", "object_image_url", "object_label", "canvas"]
+    required_fields = ["prompt", "object_label", "canvas"]
     missing = [field for field in required_fields if field not in job_input]
     if missing:
         raise ValueError(f"Missing required parameter(s): {', '.join(missing)}")
+    if not job_input.get("object_image_url") and not job_input.get("object_image_data"):
+        raise ValueError("OBJECT_IMAGE_SOURCE_REQUIRED")
 
     workflow = copy.deepcopy(BASE_WORKFLOW)
     nodes = {node["id"]: node for node in workflow.get("nodes", [])}
@@ -81,8 +92,16 @@ def build_basic_workflow(job_input: dict) -> dict:
     object_label = str(job_input["object_label"]).strip() or "object"
     update_mask_node(nodes, object_label)
 
-    object_image_url = job_input["object_image_url"]
-    update_object_image_node(nodes, object_image_url)
+    object_image_url = job_input.get("object_image_url")
+    object_image_data = job_input.get("object_image_data")
+    update_object_image_node(nodes, object_image_url, object_image_data)
+
+    source = (
+        "image_data"
+        if object_image_data
+        else ("image_url" if object_image_url else "unknown")
+    )
+    _log_workflow_debug("basic", workflow, source=source)
 
     return workflow
 
@@ -159,9 +178,9 @@ def update_canvas_node(nodes, canvas_payload: dict):
     ui_config["image_states"] = image_states
 
 
-def update_object_image_node(nodes, image_url: str):
+def update_object_image_node(nodes, image_url: str | None, image_data: str | None):
     load_node = get_node(nodes, OBJECT_IMAGE_NODE_ID)
-    filename = download_object_image(image_url)
+    filename = persist_image_source(image_url, image_data)
     load_node.setdefault("widgets_values", [])
     if not load_node["widgets_values"]:
         load_node["widgets_values"].append(filename)
@@ -169,20 +188,38 @@ def update_object_image_node(nodes, image_url: str):
         load_node["widgets_values"][0] = filename
 
 
-def download_object_image(image_url: str) -> str:
-    try:
-        resp = requests.get(image_url, timeout=60)
-        resp.raise_for_status()
-    except requests.RequestException as exc:
-        raise ValueError(f"Failed to download object image: {exc}") from exc
-
+def persist_image_source(image_url: str | None, image_data: str | None) -> str:
     input_dir = Path("/comfyui/input")
     input_dir.mkdir(parents=True, exist_ok=True)
-    filename = f"{uuid.uuid4().hex}.png"
-    file_path = input_dir / filename
-    with open(file_path, "wb") as fp:
-        fp.write(resp.content)
-    return filename
+
+    if image_data:
+        header, _, data_part = image_data.partition(",")
+        if not data_part:
+            data_part = header
+        try:
+            binary = base64.b64decode(data_part)
+        except base64.binascii.Error as exc:
+            raise ValueError("INVALID_OBJECT_IMAGE_DATA") from exc
+        suffix = ".png"
+        if header.startswith("data:image/") and ";" in header:
+            mime = header.split(";")[0].split("/")[-1]
+            suffix = f".{mime}"
+        filename = f"{uuid.uuid4().hex}{suffix}"
+        (input_dir / filename).write_bytes(binary)
+        return filename
+
+    if image_url:
+        try:
+            resp = requests.get(image_url, timeout=60)
+            resp.raise_for_status()
+        except requests.RequestException as exc:
+            raise ValueError(f"Failed to download object image: {exc}") from exc
+        suffix = Path(urllib.parse.urlparse(image_url).path).suffix or ".png"
+        filename = f"{uuid.uuid4().hex}{suffix}"
+        (input_dir / filename).write_bytes(resp.content)
+        return filename
+
+    raise ValueError("OBJECT_IMAGE_SOURCE_REQUIRED")
 
 
 def get_node(nodes: dict, node_id: int) -> dict:
