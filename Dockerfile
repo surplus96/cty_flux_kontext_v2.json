@@ -19,7 +19,7 @@ RUN comfy model download --url https://huggingface.co/uwg/upscaler/resolve/main/
 RUN comfy model download --url https://huggingface.co/zer0int/CLIP-GmP-ViT-L-14/resolve/main/ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors --relative-path models/text_encoders/long_clip --filename ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors --relative-path models/text_encoders/t5 --filename t5xxl_fp8_e4m3fn_scaled.safetensors
 RUN comfy model download --url https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors --relative-path models/vae --filename ae.safetensors
-RUN gdown --id 1pjmbNQeyViD67IxP9EfRuPqIMsMF5PaT \
+RUN gdown --quiet --id 1pjmbNQeyViD67IxP9EfRuPqIMsMF5PaT \
     -O /comfyui/models/unet/flux1-dev-kontext.safetensors
 # copy all input data (like images or videos) into comfyui (uncomment and adjust if needed)
 # COPY input/ /comfyui/input/
